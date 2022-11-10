@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container text-center" style="height: 25rem;">
+    <img class="mt-4" src="{% static 'img/search-error.png' %}" alt="">
+    <h3>Sorry nothing related to ' {{ qry }} ' is available</h3>
+    <h5 class="text-muted">Please check the spelling or try searching for something else</h5>
+</div>
+
+{% endblock%}
