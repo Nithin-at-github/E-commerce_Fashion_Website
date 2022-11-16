@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container text-center" style="height: 25rem;">
+    <img class="mt-4" src="{% static 'img/ok-icon.png' %}" alt="" style="height: 8rem; width: 8rem;">
+    <h3 class="m-2 ">Order successfully placed</h3>
+    <a class="h5 text-muted" href="{% url 'home' %}">Back to home</a>
+</div>
+
+{% endblock%}

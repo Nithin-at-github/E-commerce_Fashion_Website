@@ -68,6 +68,7 @@ class Products(models.Model):
     stock = models.IntegerField()
     available = models.BooleanField()
     price = models.FloatField()
+    shipping = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, blank=True, null=True, default='')
     featured = models.BooleanField(default=False)

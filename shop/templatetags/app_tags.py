@@ -9,9 +9,9 @@ def catfilter(cat, subcateg):
 def remove_obj(list, slug):
     return list.exclude(slug=slug).order_by('-id')[:4]
 
-def multiply(value, arg):
-    return value * arg
+def times(num):
+    return range(num)
 
 register.filter('catfilter', catfilter)
 register.filter('remove_obj', remove_obj)
-register.filter('multiply', multiply)
+register.filter('times', times)

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid pt-2 pb-3">
+    <h3 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">
+            Wishlist
+        </span></h3>
+    <div class="row px-xl-5">
+        {% for wproduct in w_list %}
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden">
+                    <img class="img-fluid w-100" style="height:15rem" src="{{ wproduct.product.img.url }}" alt="">
+                    <div class="product-action">
+                        <a class="btn btn-outline-dark" href="{% url 'remove_wishlist' wproduct.product.id %}"
+                            title="Remove this product from wishlist"><i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center p-4">
+                    <a class="h5 text-decoration-none text-truncate" href="{{ wproduct.product.get_url }}">
+                        {{ wproduct.product.name }}</a>
+                    <p class="h6 text-muted">{{ wproduct.product.desc|truncatewords:6 }}</p>
+                    <div class="d-flex align-items-center justify-content-center mt-2">
+                        <h5>₹ {{ wproduct.product.actual_price }}</h5>
+                        <h6 class="text-muted ml-2"><del>₹{{ wproduct.product.price|floatformat:2 }}</del></h6>
+                    </div>
+                    <p class="text-info">({{ wproduct.product.offer.offer }}% OFF)</p>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-star mr-1"></small>
+                        <small class="fa fa-star text-star mr-1"></small>
+                        <small class="fa fa-star text-star mr-1"></small>
+                        <small class="fa fa-star text-star mr-1"></small>
+                        <small class="fa fa-star text-star mr-1"></small>
+                        <small>(99)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="m-4">Nothing in Wishlist</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock%}

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<!-- Registration Start -->
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <h4 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                    Register Yourself</span></h4>
+            <form action="{% url 'register' %}" method="post" id="signupForm">
+                {% csrf_token %}
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="uname">Username</label>
+                            <input class="form-control" type="text" name="uname" id="uname"
+                                placeholder="Enter a username" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <input class="form-control" type="password" name="password" id="password"
+                                placeholder="Enter a password" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="cpassword">Confirm Password</label>
+                            <input class="form-control" type="password" name="cpassword" id="cpassword"
+                                placeholder="Re-enter the above password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="fname">First Name</label>
+                            <input class="form-control" type="text" name="fname" id="fname"
+                                placeholder=" Enter your firstname" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="lname">Last Name</label>
+                            <input class="form-control" type="text" name="lname" id="lname"
+                                placeholder="Enter your lastname">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="email">E-mail</label>
+                            <input class="form-control" type="email" name="email" id="email"
+                                placeholder="Enter your email id" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="mobno">Mobile No</label>
+                            <input class="form-control" type="number" name="mobno" id="mobno"
+                                placeholder="Enter your number" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="address1">Address Line 1</label>
+                            <input class="form-control" type="text" name="address1" id="address1"
+                                placeholder="House name/number..." required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="address2">Address Line 2</label>
+                            <input class="form-control" type="text" name="address2" id="address2"
+                                placeholder="eg: 123 Street..." required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="city">City</label>
+                            <input class="form-control" type="text" name="city" id="city"
+                                placeholder="Enter your city name" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="state">State</label>
+                            <input class="form-control" type="text" name="state" id="state"
+                                placeholder="Enter your state name" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="country">Country</label>
+                            <input class="form-control" type="text" name="country" id="country"
+                                placeholder="Enter your Country" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" for="zipcode">ZIP Code</label>
+                            <input class="form-control" type="number" name="zipcode" id="zipcode"
+                                placeholder="Enter your area pincode" required>
+                        </div>
+                        <div class="text-center col-md-12 m-2">
+                            <input class="btn btn-primary" type="submit" value="Sign up">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Registration End -->
+
+<script type="text/javascript">
+    $(function () {
+        $("#signupForm").validate({
+            rules: {
+                uname: {
+                    maxlength: 10
+                },
+                password: {
+                    minlength: 8,
+                    pwcheck: true
+                },
+                cpassword: {
+                    equalTo: "#password"
+                }
+            },
+            messages: {
+                uname: {
+                    maxlength: "Username cannot be more than 10 characters."
+                },
+                password: {
+                    pwcheck: "Password must be a combination of uppercase - lowercase letters, numbers and special characters."
+                },
+                cpassword: {
+                    equalTo: "Password not matching"
+                }
+            }
+        });
+        $.validator.addMethod("pwcheck", function (value) {
+            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                && /[A-Z]/.test(value) // has an uppercase letter
+                && /[a-z]/.test(value) // has a lowercase letter
+                && /[=!\-@._*]/.test(value) // has a special character
+                && /\d/.test(value) // has a digit
+        });
+    });
+</script>
+
+{% endblock %}

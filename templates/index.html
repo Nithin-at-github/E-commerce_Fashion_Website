@@ -141,7 +141,8 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" style="height:15rem" src="{{ fproduct.img.url }}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark" href="{% url 'add_to_wishlist' fproduct.id %}"
+                                    title="Add this product to Wishlist"><i class="far fa-heart"></i></a>
                             </div>
                         </div>
                         <div class="text-center p-4">
@@ -218,7 +219,8 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" style="height:15rem" src="{{ product.img.url }}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark" href="{% url 'add_to_wishlist' product.id %}"
+                                    title="Add this product to Wishlist"><i class="far fa-heart"></i></a>
                             </div>
                         </div>
                         <div class="text-center p-4">

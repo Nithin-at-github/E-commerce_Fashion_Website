@@ -119,14 +119,3 @@ def search(request):
             return render(request, 'shop.html', data)
         else:
             return render(request, 'search_error.html', {'qry':query,})
-
-
-
-
-
-
-
-
-
-
-

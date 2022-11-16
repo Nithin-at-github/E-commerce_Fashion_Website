@@ -9,7 +9,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Favicon -->
-    <link href="{% static 'img/icon.png' %}" rel="icon">
+    <link href="{% static 'img/icon.webp' %}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -18,12 +18,12 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
     <!-- Libraries Stylesheet -->
     <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -50,9 +50,71 @@
                     </div>
                 </form>
             </div>
+            {% if user != None %}
+            <div class="col-lg-4 col-6">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle h6 text-dark" data-toggle="dropdown">
+                        {{ user.first_name}}&nbsp;{{ user.last_name}}
+                    </a>
+                    <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+                        <a href="{% url 'cart_details' %}" class="dropdown-item">Cart</a>
+                        <a href="{% url 'wishlist' %}" class="dropdown-item">Wishlist</a>
+                        <a href="{% url 'orders_view' %}" class="dropdown-item">Orders</a>
+                        <a href="{% url 'signout' %}" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
             <div class="col-lg-4 col-6 text-right">
-                <button class="btn" type="button">Sign in</button>
-                <button class="btn" type="button">Sign up</button>
+                <a href="{% url 'login' %}" class="btn">Sign in</a>
+                <a href="{% url 'register' %}" class="btn">Sign up</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row bg-secondary py-1 px-xl-5 d-block d-lg-none">
+        <div class="col-lg-6 d-block d-lg-none">
+            <div class="col-lg-6 text-center text-lg-right d-block d-lg-none">
+                <div class="d-inline-flex align-items-center">
+                    {% if user != None %}
+                    <div class="col-lg-4 col-6">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle h6 text-dark" data-toggle="dropdown">
+                                {{ user.first_name}}&nbsp;{{ user.last_name}}
+                            </a>
+                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                <a href="" class="dropdown-item">Profile</a>
+                                <a href="{% url 'cart_details' %}" class="dropdown-item">Cart</a>
+                                <a href="{% url 'wishlist' %}" class="dropdown-item">Wishlist</a>
+                                <a href="{% url 'orders_view' %}" class="dropdown-item">Orders</a>
+                                <a href="{% url 'signout' %}" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My
+                            Account</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{% url 'login' %}" class="btn">Sign in</a>
+                            <a href="{% url 'register' %}" class="btn">Sign up</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="d-inline-flex align-items-center d-block d-lg-none">
+                    <a href="{% url 'wishlist' %}" class="btn px-0 ml-2">
+                        <i class="fas fa-heart text-primary"></i>
+                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
+                            {{ w_count }}</span>
+                    </a>
+                    <a href="{% url 'cart_details' %}" class="btn px-0 ml-2">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">
+                            {{ item_count }}</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -74,8 +136,9 @@
                         <div class="navbar-nav mr-auto py-0">
                             {% for subcat in subcats %}
                             <div class="nav-item dropdown">
-                                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ subcat.name }} <i
-                                        class="fa fa-angle-down mt-1"></i></a>
+                                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                    {{ subcat.name }}
+                                    <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                     {% for category in categories|catfilter:subcat.id %}
                                     <a href="{{ category.get_url }}" class="dropdown-item">{{ category }}</a>
@@ -85,10 +148,10 @@
                             {% endfor %}
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                            <a href="" class="btn px-0">
+                            <a href="{% url 'wishlist' %}" class="btn px-0">
                                 <i class="fas fa-heart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle"
-                                    style="padding-bottom: 2px;">0</span>
+                                    style="padding-bottom: 2px;">{{ w_count }}</span>
                             </a>
                             <a href="{% url 'cart_details' %}" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
@@ -102,6 +165,20 @@
         </div>
     </div>
     <!-- Navbar End -->
+
+    {% if messages %}
+    <div class="container">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" id="msg">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
 
     {% block content %}
     {% endblock %}
@@ -121,25 +198,31 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="text-secondary text-uppercase mb-4">Quick Links</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Terms of
                                 Use</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Return
                                 Policy</a>
                             <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>FAQ</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About
+                                Us</a>
                             <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
                         <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>My Profile</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>My Cart</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Orders</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Wishlist</a>
-                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Logout</a>
-                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Customer Care</a>
+                            <a class="text-secondary mb-2" href="{% url 'profile' %}">
+                                <i class="fa fa-angle-right mr-2"></i>My Profile</a>
+                            <a class="text-secondary mb-2" href="{% url 'cart_details' %}">
+                                <i class="fa fa-angle-right mr-2"></i>Cart</a>
+                            <a class="text-secondary mb-2" href="{% url 'orders_view' %}">
+                                <i class="fa fa-angle-right mr-2"></i>Orders</a>
+                            <a class="text-secondary mb-2" href="{% url 'wishlist' %}">
+                                <i class="fa fa-angle-right mr-2"></i>Wishlist</a>
+                            {% if request.session.uid %}
+                            <a class="text-secondary mb-2" href="{% url 'signout' %}">
+                                <i class="fa fa-angle-right mr-2"></i>Logout</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
@@ -164,20 +247,28 @@
     </div>
     <!-- Footer End -->
 
+    <script>
+        setTimeout(function () {
+            if ($('#msg').length > 0) {
+                $('#msg').fadeOut();
+            }
+        }, 5000)
+    </script>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
 
     <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
+    <!-- <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script> -->
+
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
