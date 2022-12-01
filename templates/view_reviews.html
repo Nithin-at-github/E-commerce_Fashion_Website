@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+{% block content %}
+
+<style>
+    #add_rating {
+        display: flex;
+    }
+
+    #add_rating.disabled {
+        pointer-events: none;
+    }
+
+    #add_rating .btn {
+        opacity: 20%;
+        padding: 3px;
+    }
+
+    #add_rating .btn.active {
+        opacity: 100%;
+    }
+
+    #add_rating:hover .btn {
+        opacity: 100%;
+    }
+
+    #add_rating .btn:hover {
+        opacity: 100%;
+    }
+
+    #add_rating .btn:hover~.btn {
+        opacity: 20%;
+    }
+</style>
+
+<div class="container-fluid px-xl-5">
+    <h4 class=" section-title position-relative text-uppercase mb-3">
+        <span class="bg-secondary pr-3">My Reviews</span>
+    </h4>
+    <div class="row px-xl-5">
+        {% for review in reviews %}
+        {% if e_review.id == review.id %}
+        <div class="col-md-4 col-sm card m-4">
+            <div class=" card-body">
+                <div class="row">
+                    <div class="col col-md-6 p-1">
+                        <img src="{{ review.product.img.url }}" alt="product" style="height: 10rem; width: 10rem;">
+                    </div>
+                    <div class="col col-md-6 p-1">
+                        <div class="d-flex my-3">
+                            <p class="mb-0 mr-2">Your Rating * :</p>
+                            <div class="text-primary" id="add_rating">
+                                <button class="btn"><i class=" fas fa-star text-star"></i></button>
+                                <button class="btn"><i class=" fas fa-star text-star"></i></button>
+                                <button class="btn"><i class=" fas fa-star text-star"></i></button>
+                                <button class="btn"><i class=" fas fa-star text-star"></i></button>
+                                <button class="btn"><i class=" fas fa-star text-star"></i></button>
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'edit_review' review.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="rating" value="" id="rating_val">
+                            <div class="form-group">
+                                <label for="message">Your Review *</label>
+                                <textarea id="message" cols="30" rows="5" class="form-control" name="comment"
+                                    required>{{ review.comment }}</textarea>
+                            </div>
+                            <div class="form-group mb-0">
+                                <input type="submit" value="Update" class="btn btn-primary px-3">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-md-4 col-sm card m-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col col-md-6 p-1">
+                        <img src="{{ review.product.img.url }}" alt="product" style="height: 10rem; width: 10rem;">
+                    </div>
+                    <div class="col col-md-6 p-1">
+                        <h6><a class="h5" href="{{ review.product.get_url }}">
+                                {{ review.product.name}}</a><small> - {{ review.created }}</small>
+                        </h6>
+                        {% if review.edited == True %}
+                        <h6><small><i>( edited {{ review.last_updated }} )</i></small></h6>
+                        {% endif %}
+                        <div class="text-primary mb-2">
+                            {% for i in review.rating|times %}
+                            <i class="fas fa-star text-star"></i>
+                            {% endfor%}
+                            {% for j in review.rating|rating_rem %}
+                            <i class="far fa-star text-star"></i>
+                            {% endfor %}
+                        </div>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'del_review' review.id %}" class="m-2" style="float: right;" title="Delete review">
+                    <i class="fas fa-trash text-danger"></i></a>
+                <a href="{% url 'edit_review' review.id %}" class="m-2" style="float: right;" title="Edit review">
+                    <i class="fas fa-edit text-primary"></i></a>
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div style="height: 15rem;">
+            <p class="h5 m-4">You've not submitted any reviews.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const starwrapper = document.querySelector("#add_rating")
+    const stars = document.querySelectorAll("#add_rating .btn")
+
+    stars.forEach((star, clickedIdx) => {
+        star.addEventListener("click", () => {
+            starwrapper.classList.add("disabled")
+            stars.forEach((otherStar, otherIdx) => {
+                if (otherIdx <= clickedIdx) {
+                    otherStar.classList.add("active")
+                }
+            })
+            $("#rating_val").val(clickedIdx + 1)
+        })
+    })
+</script>
+
+{% endblock%}

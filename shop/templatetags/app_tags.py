@@ -10,8 +10,13 @@ def remove_obj(list, slug):
     return list.exclude(slug=slug).order_by('-id')[:4]
 
 def times(num):
-    return range(num)
+    return range(round(num))
+
+def rating_rem(num):
+    new_range = 5-round(num)
+    return range(new_range)
 
 register.filter('catfilter', catfilter)
 register.filter('remove_obj', remove_obj)
 register.filter('times', times)
+register.filter('rating_rem', rating_rem)

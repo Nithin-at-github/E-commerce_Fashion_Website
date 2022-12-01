@@ -65,7 +65,11 @@ class Products(models.Model):
     ideal_for = models.CharField(max_length=50, default='')
     wash_care = models.CharField(max_length=50, default='')
     brand = models.ForeignKey(Brands, on_delete=models.CASCADE, default='')
-    stock = models.IntegerField()
+    stock_xs = models.IntegerField(default=0)
+    stock_s = models.IntegerField(default=0)
+    stock_m = models.IntegerField(default=0)
+    stock_l = models.IntegerField(default=0)
+    stock_xl = models.IntegerField(default=0)
     available = models.BooleanField()
     price = models.FloatField()
     shipping = models.IntegerField(default=0)
@@ -73,6 +77,8 @@ class Products(models.Model):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, blank=True, null=True, default='')
     featured = models.BooleanField(default=False)
     offer = models.ForeignKey(Offers, on_delete=models.CASCADE, blank=True, null=True, default='')
+    avg_review = models.FloatField(default=0)
+    tot_reviews = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

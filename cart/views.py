@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from datetime import datetime
 import random, string
+
 # Create your views here.
 
 def crt_id(request):
@@ -97,15 +98,84 @@ def add_to_cart(request, prod_id):
                 ct.save()
         try:
             c_items = Items.objects.get(product=prod, cart=ct, size=p_size)
-            if c_items.quantity < c_items.product.stock:
-                c_items.quantity += quant
+            if p_size == 'XS':
+                if c_items.quantity < c_items.product.stock_xs:
+                    c_items.quantity += quant
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('cart_details')
+            elif p_size == 'S':
+                if c_items.quantity < c_items.product.stock_s:
+                    c_items.quantity += quant
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('cart_details')
+            elif p_size == 'M':
+                if c_items.quantity < c_items.product.stock_m:
+                    c_items.quantity += quant
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('cart_details')
+            elif p_size == 'L':
+                if c_items.quantity < c_items.product.stock_l:
+                    c_items.quantity += quant
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('cart_details')
+            elif p_size == 'XL':
+                if c_items.quantity < c_items.product.stock_xl:
+                    c_items.quantity += quant
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('cart_details')
             c_items.save()
             return redirect('cart_details')
         except ObjectDoesNotExist:
-            c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
-            c_items.save()
-            messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
-            return redirect('product_detail', prod.category.slug, prod.slug)
+            if p_size == 'XS':
+                if quant <=  prod.stock_xs:
+                    c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
+                    c_items.save()
+                    messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+            elif p_size == 'S':
+                if quant <=  prod.stock_s:
+                    c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
+                    c_items.save()
+                    messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+            elif p_size == 'M':
+                if quant <=  prod.stock_m:
+                    c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
+                    c_items.save()
+                    messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+            elif p_size == 'L':
+                if quant <=  prod.stock_l:
+                    c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
+                    c_items.save()
+                    messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+            elif p_size == 'XL':
+                if quant <=  prod.stock_xl:
+                    c_items = Items.objects.create(product=prod, cart=ct, size=p_size, quantity=quant)
+                    c_items.save()
+                    messages.success(request, "Product added to cart successfully. Check out the cart to proceed buying.")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
+                else:
+                    messages.error(request, "Selected quantity exceeded product stock. Please check again...!")
+                    return redirect('product_detail', prod.category.slug, prod.slug)
 
 def min_cart(request, prod_id, p_size):
     if request.session.has_key('uid'):
@@ -146,6 +216,7 @@ def checkout(request):
     act_tot = 0
     tot_shipping = 0
     customer = None
+    data ={}
     try:
         if request.session.has_key('uid'):
             c_id = request.session['uid']
@@ -158,6 +229,8 @@ def checkout(request):
             return redirect('cart_details')
         cart_obj = get_object_or_404(CartList,id=cart.id)
         products = Items.objects.all().filter(cart=cart_obj)
+        if not products:
+            return redirect('cart_details')
         for i in products:
             prdct = Products.objects.get(id=i.product.id)
             offer = Offers.objects.get(id=prdct.offer.id)
@@ -222,6 +295,24 @@ def checkout(request):
                         status='Order Placed',
                     )
                     order.save()
+                if i.size == 'XS':
+                    updated = i.product.stock_xs-i.quantity
+                    stock_update = Products.objects.filter(pk=i.product.id).update(stock_xs=updated)
+                elif i.size == 'S':
+                    updated = i.product.stock_s-i.quantity
+                    stock_update = Products.objects.filter(pk=i.product.id).update(stock_s=updated)
+
+                elif i.size == 'M':
+                    updated = i.product.stock_m-i.quantity
+                    stock_update = Products.objects.filter(pk=i.product.id).update(stock_m=updated)
+
+                elif i.size == 'L':
+                    updated = i.product.stock_l-i.quantity
+                    stock_update = Products.objects.filter(pk=i.product.id).update(stock_l=updated)
+
+                elif i.size == 'XL':
+                    updated = i.product.stock_xl-i.quantity
+                    stock_update = Products.objects.filter(pk=i.product.id).update(stock_xl=updated)
             if request.session.has_key('uid'):
                 ct = CartList.objects.get(cart_id=request.session['uid'])
                 Items.objects.filter(cart=ct).delete()
@@ -232,5 +323,5 @@ def checkout(request):
             return render(request, 'order_success.html')
         else:
             return render(request, 'checkout.html', data)
-    except CartList.DoesNotExist:
+    except (CartList.DoesNotExist, Items.DoesNotExist):
         return redirect('cart_details')

@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
+from django.db import models
 from shop.models import *
 
 # Create your models here.
@@ -26,3 +27,17 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return str(self.user_id)+' - '+str(self.product)
+
+class Reviews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default='')
+    email = models.CharField(max_length=50, default='')
+    comment = models.TextField()
+    rating = models.IntegerField(default=0)
+    created = models.DateTimeField(auto_now_add=True)
+    edited = models.BooleanField(default=False)
+    last_updated = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return str(self.user)+' - '+str(self.product)

@@ -9,8 +9,8 @@ class Cat_admin(admin.ModelAdmin):
     prepopulated_fields = {'slug':['name']}
 
 class Prdct_admin(admin.ModelAdmin):
-    list_display = ['name', 'desc', 'price','shipping', 'stock', 'category']
-    list_editable = ['price', 'shipping', 'stock', 'category']
+    list_display = ['name', 'desc','shipping', 'stock_xs', 'stock_s', 'stock_m', 'stock_l', 'stock_xl', 'category']
+    list_editable = ['shipping', 'stock_xs', 'stock_s', 'stock_m', 'stock_l', 'stock_xl', 'category']
     prepopulated_fields = {'slug':['name','desc']}
 
 class SubCat_admin(admin.ModelAdmin):

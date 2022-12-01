@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load app_tags %}
 {% block content %}
 
 <!-- Carousel Start -->
@@ -118,7 +119,6 @@
                             </div>
                             <div class="flex-fill pl-3">
                                 <h6>{{ category.name }}</h6>
-                                <!-- <small class="text-body">100 Products</small> -->
                             </div>
                         </div>
                     </a>
@@ -155,12 +155,21 @@
                             </div>
                             <p class="text-info">({{ fproduct.offer.offer }}% OFF)</p>
                             <div class="d-flex align-items-center justify-content-center mb-1">
+                                {% for i in fproduct.avg_review|times %}
                                 <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small>(99)</small>
+                                {% empty %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% if fproduct.avg_review != 0 %}
+                                {% for j in fproduct.avg_review|rating_rem %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% endif %}
+                                <small>({{ fproduct.tot_reviews }})</small>
                             </div>
                         </div>
                     </div>
@@ -233,12 +242,21 @@
                             </div>
                             <p class="text-info">({{ product.offer.offer }}% OFF)</p>
                             <div class="d-flex align-items-center justify-content-center mb-1">
+                                {% for i in product.avg_review|times %}
                                 <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small class="fa fa-star text-star mr-1"></small>
-                                <small>(99)</small>
+                                {% empty %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% if product.avg_review != 0 %}
+                                {% for j in product.avg_review|rating_rem %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% endif %}
+                                <small>({{ product.tot_reviews }})</small>
                             </div>
                         </div>
                     </div>

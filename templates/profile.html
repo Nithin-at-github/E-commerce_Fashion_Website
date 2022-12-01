@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Profile Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-4">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                    My Profile</span></h5>
+            <div class="bg-light p-2 mb-4">
+                <h5>
+                    <img src="{% static 'img/profile.svg' %}" alt="">
+                    &nbsp;Hello, {{ customer.firstname }} {{ customer.lastname }}
+                </h5>
+            </div>
+            <div class="mb-5">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                        My Stuffs</span>
+                </h5>
+                <div class="bg-light p-1">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="{% url 'cart_details' %}" class="btn">My Cart</a></li>
+                        <li class="list-group-item"><a href="{% url 'wishlist' %}" class="btn">My Wishlist</a></li>
+                        <li class="list-group-item"><a href="{% url 'orders_view' %}" class="btn">My Orders</a></li>
+                        <li class="list-group-item"><a href="{% url 'reviews_view' %}" class="btn">My Reviews</a></li>
+                        <li class="list-group-item"><a href="{% url 'signout' %}" class="btn">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                    Personal Details </span>
+                <form action="{% url 'profile' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="edit" class="btn" style="float: right;" title="Edit personal details">
+                        <i class="fas fa-edit text-primary"></i></button><br>
+                </form>
+            </h5>
+            <div class="bg-light p-30 mb-5">
+                <form action="{% url 'profile' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>First Name</label>
+                            <input class="form-control" type="text" name="fname" placeholder="Enter your firstname"
+                                value="{{ customer.firstname }}" {%if not mode %}readonly{% endif %} required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" type="text" name="lname" placeholder="Enter your lastname"
+                                value="{{ customer.lastname }}" {% if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" name="email" placeholder="Enter your email id"
+                                value="{{ customer.email }}" required {% if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="text" name="mobno" placeholder="Enter your mobile number"
+                                value="{{ customer.mob_no }}" required {% if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 1</label>
+                            <input class="form-control" type="text" {%if not mode %}readonly{% endif %} name="address1"
+                                placeholder="House name/number..." value="{{ customer.address_line1 }}" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 2</label>
+                            <input class="form-control" type="text" name="address2" placeholder="Street name...."
+                                value="{{ customer.address_line2 }}" required {%if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            <input class="form-control" type="text" name="city" placeholder="Enter your city"
+                                value="{{ customer.city }}" required {%if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>State</label>
+                            <input class="form-control" type="text" name="state" placeholder="Enter your state"
+                                value="{{ customer.state }}" required {%if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Country</label>
+                            <input class="form-control" type="text" name="country" placeholder="Enter your Country"
+                                value="{{ customer.country }}" required {%if not mode %}readonly{% endif %}>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>ZIP Code</label>
+                            <input class="form-control" type="text" {%if not mode %}readonly{% endif %} name="zipcode"
+                                placeholder="Enter your area pincode" value="{{ customer.zip_code }}" required>
+                        </div>
+                        {% if mode %}
+                        <input type="submit" value="Update" class="btn btn-primary ml-4">
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile End -->
+
+{% endblock%}

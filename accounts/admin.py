@@ -8,3 +8,4 @@ class Custmr_admin(admin.ModelAdmin):
 
 admin.site.register(Customers, Custmr_admin)
 admin.site.register(Wishlist)
+admin.site.register(Reviews)

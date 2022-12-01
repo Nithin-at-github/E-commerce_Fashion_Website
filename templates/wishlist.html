@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load app_tags %}
 {% block content %}
 
 <div class="container-fluid pt-2 pb-3">
@@ -28,12 +29,21 @@
                     </div>
                     <p class="text-info">({{ wproduct.product.offer.offer }}% OFF)</p>
                     <div class="d-flex align-items-center justify-content-center mb-1">
+                        {% for i in wproduct.product.avg_review|times %}
                         <small class="fa fa-star text-star mr-1"></small>
-                        <small class="fa fa-star text-star mr-1"></small>
-                        <small class="fa fa-star text-star mr-1"></small>
-                        <small class="fa fa-star text-star mr-1"></small>
-                        <small class="fa fa-star text-star mr-1"></small>
-                        <small>(99)</small>
+                        {% empty %}
+                        <small class="far fa-star text-star mr-1"></small>
+                        <small class="far fa-star text-star mr-1"></small>
+                        <small class="far fa-star text-star mr-1"></small>
+                        <small class="far fa-star text-star mr-1"></small>
+                        <small class="far fa-star text-star mr-1"></small>
+                        {% endfor %}
+                        {% if wproduct.product.avg_review != 0 %}
+                        {% for j in wproduct.product.avg_review|rating_rem %}
+                        <small class="far fa-star text-star mr-1"></small>
+                        {% endfor %}
+                        {% endif %}
+                        <small>({{ wproduct.product.tot_reviews }})</small>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,7 @@
                         <img src="{% static 'img/signin.webp' %}" alt="login form" class="img-fluid"
                             style="height: 30rem; width: 30rem; border-radius: 1rem 0 0 1rem;" />
                     </div>
+                    {% if page == 'login' %}
                     <div class="col-md-6 col-lg-7 align-items-center">
                         <div class="card-body p-4 p-lg-5 text-black">
                             <form action="{% url 'login' %}" method="post" id="signinForm">
@@ -35,7 +36,7 @@
                                 </div>
 
                                 <p class="h5 text-center mb-2">
-                                    <a class="small text-muted" href="#">Forgot password ?</a>
+                                    <a class="small text-muted" href="{% url 'forgot_pass' %}">Forgot password ?</a>
                                 </p>
 
                                 <div class="text-center pt-1 mb-4">
@@ -48,10 +49,92 @@
                             </form>
                         </div>
                     </div>
+                    {% elif page == 'forgot_pass' %}
+                    <div class="col-md-6 col-lg-7 align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <form action="{% url 'forgot_pass' %}" method="post" id="ForgotForm">
+                                {% csrf_token %}
+                                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                    Forgot your password ...?</h3>
+                                <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                    Don't worry. we'll send you a reset password link.</h4>
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="uname" class="form-control form-control-lg" name="uname"
+                                        placeholder="Enter your username" required>
+                                </div>
+
+                                <div class="text-center pt-1 mb-4">
+                                    <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="Submit">
+                                </div>
+
+                                <p class="mb-5 pb-lg-2">Don't have an
+                                    account ? <a href="{% url 'register' %}" style="color: #393f81;">Register here</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                    {% elif page == 'reset_pass' %}
+                    <div class="col-md-6 col-lg-7 align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <form action="{% url 'reset_password' uid token %}" method="post" id="ResetForm">
+                                {% csrf_token %}
+                                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                    Reset your password</h3>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="password" class="form-control form-control-lg"
+                                        name="password" placeholder=" Enter your password" required>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="cpassword" class="form-control form-control-lg"
+                                        name="cpassword" placeholder=" Re-enter your password" required>
+                                </div>
+
+                                <div class="text-center pt-1 mb-4">
+                                    <input type="submit" class="btn btn-outline-dark btn-lg btn-block"
+                                        value="Reset Password">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#ResetForm").validate({
+            rules: {
+                password: {
+                    minlength: 8,
+                    pwcheck: true
+                },
+                cpassword: {
+                    equalTo: "#password"
+                }
+            },
+            messages: {
+                password: {
+                    pwcheck: "Password must be a combination of uppercase - lowercase letters, numbers and special characters."
+                },
+                cpassword: {
+                    equalTo: "Password not matching"
+                }
+            }
+        });
+        $.validator.addMethod("pwcheck", function (value) {
+            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                && /[A-Z]/.test(value) // has an uppercase letter
+                && /[a-z]/.test(value) // has a lowercase letter
+                && /[=!\-@._*]/.test(value) // has a special character
+                && /\d/.test(value) // has a digit
+        });
+    });
+</script>
 
 {% endblock%}

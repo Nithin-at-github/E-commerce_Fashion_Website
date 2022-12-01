@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+{% block content %}
+
+<!-- Shop Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <!-- Shop Product Start -->
+        <div class="col-lg-12 col-md-8">
+            <div class="row pb-3">
+                {% for product in pg.object_list %}
+                <div class="col-lg-3 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" style="height: 15rem;" src="{{ product.img.url }}" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark" href="{% url 'add_to_wishlist' product.id %}"
+                                    title="Add this product to Wishlist"><i class="far fa-heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <a class="h5 text-decoration-none text-truncate" href="{{ product.get_url }}">
+                                {{ product.name }}</a>
+                            <p class="h6 text-muted">{{ product.desc|truncatewords:6 }}</p>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>₹ {{ product.actual_price }}</h5>
+                                <h6 class="text-muted ml-2"><del>₹{{ product.price|floatformat:2 }}</del></h6>
+                            </div>
+                            <p class="text-info">({{ product.offer.offer }}% OFF)</p>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                {% for i in product.avg_review|times %}
+                                <small class="fa fa-star text-star mr-1"></small>
+                                {% empty %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% if product.avg_review != 0 %}
+                                {% for j in product.avg_review|rating_rem %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% endif %}
+                                <small>({{ product.tot_reviews }})</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            {% if pg.has_previous %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?qry={{qry}}&page={{pg.previous_page_number}}">Previous</span></a></li>
+                            {% endif %}
+                            {% for p in pg.paginator.page_range %}
+                            <li class="page-item {% if pg.number == p %} active {% endif %}"><a class="page-link"
+                                    href="?qry={{qry}}&page={{p}}">{{ p }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if pg.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?qry={{qry}}&page={{pg.next_page_number}}">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+<!-- Shop End -->
+
+{% endblock %}
