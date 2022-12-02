@@ -146,6 +146,20 @@
                                 </div>
                             </div>
                             {% endfor %}
+                            <div class="collapse col-12 text-left mt-1 p-1" id="sm-search">
+                                <form action=" {% url 'search' %}" method="get" id="search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="qry" id="inp"
+                                            placeholder=" Search for products">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent text-primary">
+                                                <button class="btn btn-sm" type="submit"></button><i
+                                                    class="fa fa-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="{% url 'wishlist' %}" class="btn px-0">
@@ -248,6 +262,12 @@
     <!-- Footer End -->
 
     <script>
+        // search bar for small devices
+        if (screen.width < 800) {
+            $('#sm-search').removeClass('collapse')
+        }
+
+        // automatic closing of messages
         setTimeout(function () {
             if ($('#msg').length > 0) {
                 $('#msg').fadeOut();
