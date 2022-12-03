@@ -48,6 +48,7 @@ def register(request):
                     first_name=fname,
                     last_name=lname
                 )
+                create_user.is_active = False
                 create_user.save()
                 try:
                     user = get_object_or_404(User, username=uname)
@@ -65,8 +66,35 @@ def register(request):
                         zip_code=zipcode
                     )
                     customer.save()
-                    messages.success(request, "Registration Successfull. Try Login.")
-                    return redirect('login')
+
+                    # Welcome Email
+                    subject = "Welcome to Dazzling"
+                    message = "Hello " + user.first_name + " !! \n" + "Welcome to Dazzling ! \nThank you for signing up in our website.\nWe've send you a confirmation email. Please confirm your email id inorder to activate your account.\n\nRegards,\nDazzling Team"
+                    from_email = settings.EMAIL_HOST_USER
+                    to_list = [user.email]
+                    send_mail(subject, message, from_email, to_list, fail_silently=True)
+
+                    # Confirmation Email
+                    current_site = get_current_site(request)
+                    email_sub = "Confirm your Email"
+                    message1 = render_to_string("email_confirmation.html",{
+                        'user' : user.first_name,
+                        'domain' : current_site.domain,
+                        'uid' : urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token' : generate_token.make_token(user),
+                    })
+                    email = EmailMessage(
+                        email_sub,
+                        message1,
+                        settings.EMAIL_HOST_USER,
+                        [user.email],
+                    )
+                    email.fail_silently=True
+                    email.send()
+
+                    messages.success(request, "Registration Successfull. We've send you a\
+                    confirmation email. Please confirm your email inorder to activate your account.")
+                    return redirect('register')
                 except User.DoesNotExist:
                     messages.error(request, "Something went wrong..! Try again.")
                     return redirect('register')
@@ -74,6 +102,21 @@ def register(request):
             messages.error(request, "Passwords not matching.")
             return redirect('register')
     return render(request, 'signup.html')
+
+def activate(request, uid64, token):
+    try:
+        uid =force_str(urlsafe_base64_decode(uid64))
+        myuser = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        myuser = None
+    
+    if myuser is not None and generate_token.check_token(myuser, token):
+        myuser.is_active = True
+        myuser.save()
+        messages.success(request, "Account activated successfully. You can now login.")        
+        return redirect('login')
+    else:
+        return render(request, 'activation_failed.html')
 
 def login(request):
     page = 'login'
@@ -87,7 +130,7 @@ def login(request):
             request.session['uid'] = user.id
             return redirect('home')
         else:
-            messages.error(request, 'Incorrect username or password.')
+            messages.error(request, 'Incorrect username or password.  Or.. do you forgot to activate your account ? Please check your mail')
             return redirect('login')
     return render(request, 'signin.html', {'page': page})
 
@@ -236,7 +279,8 @@ def add_review(request, prod_id):
     prod = get_object_or_404(Products, pk=prod_id)
     if request.session.has_key('uid'):
         user = get_object_or_404(User, pk=request.session['uid'])
-        orders = Orders.objects.filter(cart=request.session['uid'],product=prod)
+        # orders = Orders.objects.filter(cart=request.session['uid'], product=prod, status='Delivered') # for future use.
+        orders = Orders.objects.filter(cart=request.session['uid'], product=prod)
         if orders:
             try:
                 is_in_review = Reviews.objects.get(user=user,product=prod)

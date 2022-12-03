@@ -84,7 +84,7 @@
                                 {{ user.first_name}}&nbsp;{{ user.last_name}}
                             </a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="" class="dropdown-item">Profile</a>
+                                <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
                                 <a href="{% url 'cart_details' %}" class="dropdown-item">Cart</a>
                                 <a href="{% url 'wishlist' %}" class="dropdown-item">Wishlist</a>
                                 <a href="{% url 'orders_view' %}" class="dropdown-item">Orders</a>
