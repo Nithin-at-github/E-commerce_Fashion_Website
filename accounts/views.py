@@ -5,8 +5,10 @@ from .tokens import generate_token
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.models import User, auth
+from django.contrib.auth.decorators import login_required
 from shop.views import *
 from cart.views import *
+from administrator.views import *
 from django.core.mail import send_mail, EmailMessage
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -126,9 +128,14 @@ def login(request):
 
         user = authenticate(username=uname, password=password)
         if user is not None:
-            auth.login(request, user)
-            request.session['uid'] = user.id
-            return redirect('home')
+            if user.is_superuser == True:
+                auth.login(request, user)
+                request.session['user'] = "admin"
+                return redirect('admin_dash')
+            else:
+                auth.login(request, user)
+                request.session['uid'] = user.id
+                return redirect('home')
         else:
             messages.error(request, 'Incorrect username or password.  Or.. do you forgot to activate your account ? Please check your mail')
             return redirect('login')
@@ -380,6 +387,7 @@ def del_review(request, review_id):
             messages.error(request, 'You can only delete your reviews.')
             return redirect('reviews_view')
 
+@login_required(login_url='login')
 def profile(request):
     if request.session.has_key('uid'):
         user = get_object_or_404(User, pk=request.session['uid'])
@@ -431,3 +439,20 @@ def profile(request):
     else:
         messages.error(request, 'Please sign in to access profile.')
         return redirect('login')
+
+@login_required(login_url='login')
+def del_account(request):
+    if request.method == 'POST':
+        if request.session.has_key('uid'):
+            try:
+                id = request.session['uid']
+                logout(request)
+                User.objects.get(pk=id).delete()
+                messages.success(request,"Your account has been deactivated.")
+                return redirect('home')
+            except User.DoesNotExist:
+                messages.error(request,'Account does not exist !')
+                return redirect('home')
+        else:
+            messages.error(request, 'Please sign in')
+            return redirect('login')

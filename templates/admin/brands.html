@@ -1,0 +1,124 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card row px-xl-2 m-1">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h3>Brands
+                <a href="" data-bs-toggle="modal" data-bs-target="#BrandModal" class="btn btn-primary btn-sm"
+                    style="float: right;">Add Brand</a>
+            </h3><br>
+            <!-- Modal -->
+            <div class="modal fade" id="BrandModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Brand</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="{% url 'brands' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="basic-default-name"
+                                                    placeholder="Enter brand name" name="name" required />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="formFile">Logo</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="file" id="formFile" name="logo"
+                                                    accept="image/png, image/jpeg, image/webp, image/svg" required />
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="add_subcat">Add</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brands Start -->
+            <div class="row px-xl-3 pb-3">
+                {% for brand in brands %}
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="cat-item d-flex align-items-center mb-4">
+                        <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                            <img class="img-fluid" src="{{ brand.logo.url }}" alt="">
+                        </div>
+                        <div class="flex-fill pl-3">
+                            <h6>&nbsp;{{ brand.name }}</h6>
+                            <a class="btn-sm text-danger"
+                                href="http://{{ domain }}/admin/shop/brands/{{brand.id}}/delete/" title="Delete brand">
+                                <i class="menu-icon tf-icons bx bx-trash"></i></a>
+
+                            <a class="btn-sm" href="" data-bs-toggle="modal"
+                                data-bs-target="#editbrandModal{{forloop.counter}}" title="Edit brand">
+                                <i class="menu-icon tf-icons bx bx-edit"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="editbrandModal{{forloop.counter}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Update Brand</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <form action="{% url 'edit_brand' brand.id %}" method="post"
+                                            enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-name">Name</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="basic-default-name"
+                                                        placeholder="Enter brand name" name="name"
+                                                        value="{{ brand.name }}" required />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="formFile">Logo</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="file" id="formFile" name="logo"
+                                                        accept="image/png, image/jpeg, image/webp, image/svg"
+                                                        required />
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        name="add_subcat">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Brands End -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

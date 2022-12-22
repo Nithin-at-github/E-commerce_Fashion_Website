@@ -1,0 +1,385 @@
+{% extends 'admin/admin_base.html' %}
+{% load app_tags %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card row px-xl-2 m-1">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h3>Products
+                <a href="" data-bs-toggle="modal" data-bs-target="#ProductModal" class="btn btn-primary btn-sm"
+                    style="float: right;">Add Product</a>
+            </h3><br>
+            {% if form %}
+            <!-- Modal -->
+            <div class="modal fade" id="ProductModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <form action="{% url 'products' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.name|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.desc|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.img|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.img1|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.img2|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.color|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.sec_color|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.info|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.fabric|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.length|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.pattern|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.occasion|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.ideal_for|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.wash_care|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.brand|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-2">
+                                                {{form.stock_xs|as_crispy_field}}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{form.stock_s|as_crispy_field}}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{form.stock_m|as_crispy_field}}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{form.stock_l|as_crispy_field}}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{form.stock_xl|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.price|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.shipping|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.category|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.sub_category|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-2 mt-2">
+                                                {{form.featured|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class=" row mb-3">
+                                            <div class="col-sm-10">
+                                                {{form.offer|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="add_subcat">Add</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row px-xl-3">
+                {% for product in pg.object_list %}
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" style="height:15rem" src="{{ product.img.url }}" alt="">
+                        </div>
+                        <div class="text-center p-4">
+                            <div class="mb-2">
+                                <a class="btn-sm text-danger"
+                                    href="http://{{ domain }}/admin/shop/products/{{product.id}}/delete/"
+                                    title="Delete product">
+                                    <i class="menu-icon tf-icons bx bx-trash"></i></a>
+
+                                <a class="btn-sm" href="{% url 'edit_product' product.id %}" title="Edit product">
+                                    <i class="menu-icon tf-icons bx bx-edit"></i></a>
+                            </div>
+                            <a class="h5 text-decoration-none text-truncate" href="{{ product.get_url }}">
+                                {{ product.name }}</a>
+                            <p class="h6 text-muted">{{ product.desc|truncatewords:6 }}</p>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>₹ {{ product.actual_price }}</h5>
+                                <h6 class="text-muted ml-2"><del>₹{{ product.price|floatformat:2 }}</del></h6>
+                            </div>
+                            <p class="text-info">({{ product.offer.offer }}% OFF)</p>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                {% for i in product.avg_review|times %}
+                                <small class="fa fa-star text-star mr-1"></small>
+                                {% empty %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% if product.avg_review != 0 %}
+                                {% for j in product.avg_review|rating_rem %}
+                                <small class="far fa-star text-star mr-1"></small>
+                                {% endfor %}
+                                {% endif %}
+                                <small>({{ product.tot_reviews }})</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if pr_form %}
+                <!-- Update Modal -->
+                <div class="modal hide fade" id="ProductUpdateModal{{product.id}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Edit Product</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <form action="{% url 'edit_product' product.id %}" method="post"
+                                            enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.name|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.desc|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.img|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.img1|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.img2|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.color|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.sec_color|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.info|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.fabric|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.length|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.pattern|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.occasion|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.ideal_for|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.wash_care|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.brand|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-2">
+                                                    {{pr_form.stock_xs|as_crispy_field}}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{pr_form.stock_s|as_crispy_field}}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{pr_form.stock_m|as_crispy_field}}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{pr_form.stock_l|as_crispy_field}}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{pr_form.stock_xl|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.price|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.shipping|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.category|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.sub_category|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-2 mt-2">
+                                                    {{pr_form.featured|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class=" row mb-3">
+                                                <div class="col-sm-10">
+                                                    {{pr_form.offer|as_crispy_field}}
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        name="add_subcat">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            {% if pg.has_previous %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{pg.previous_page_number}}">Previous</span></a></li>
+                            {% endif %}
+                            {% for p in pg.paginator.page_range %}
+                            <li class="page-item {% if pg.number == p %} active {% endif %}"><a class="page-link"
+                                    href="?page={{p}}">{{ p }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if pg.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{pg.next_page_number}}">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

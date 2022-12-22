@@ -1,0 +1,113 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card row px-xl-2 m-1">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h2>Offers
+                <a href="" data-bs-toggle="modal" data-bs-target="#BrandModal" class="btn btn-primary btn-sm"
+                    style="float: right;">Add Offer</a>
+            </h2>
+            <!-- Modal -->
+            <div class="modal fade" id="BrandModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Offer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="{% url 'offers' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="basic-default-name"
+                                                    placeholder="Enter brand name" name="name" required />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label"
+                                                for="basic-default-name">Offer</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" id="basic-default-offer"
+                                                    placeholder="Enter offer in %" name="offer" required />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="formFile">Expiry</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="date" id="expiry-date" name="expiry"
+                                                    required />
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="add_subcat">Add</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Offer</th>
+                        <th scope="col">Expiry</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in offers %}
+                    <tr>
+                        <th scope="row">{{ forloop.revcounter }}</th>
+                        <td>{{ offer.name }}</td>
+                        <td>{{ offer.offer }}</td>
+                        <td>{{ offer.expiry }}</td>
+                        <td>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#basicModal" class="text-danger"
+                                title="Delete offer">
+                                <i class="menu-icon tf-icons bx bx-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- Modal -->
+                    <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">Warning</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Are you sure to remove this offer ? This action can't be reversed</h5>
+                                    <div class="text-center">
+                                        <a href="{% url 'del_offer' offer.id %}" class="btn btn-primary">Yes</a>
+                                        <a href="" class="btn btn-danger" data-bs-dismiss="modal">No</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                        <td>No offers till now !</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

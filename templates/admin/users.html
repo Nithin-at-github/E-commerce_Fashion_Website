@@ -1,0 +1,62 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card row px-xl-2 m-1">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h2>Users</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <th scope="row">{{ forloop.revcounter }}</th>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#basicModal" class="text-danger"
+                                title="Delete user">
+                                <i class="menu-icon tf-icons bx bx-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- Modal -->
+                    <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">Warning</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Are you sure to remove this user ? This action can't be reversed</h5>
+                                    <div class="text-center">
+                                        <a href="{% url 'del_user' user.id %}" class="btn btn-primary">Yes</a>
+                                        <a href="" class="btn btn-danger" data-bs-dismiss="modal">No</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                        <td>No users till now !</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -70,7 +70,7 @@ class Products(models.Model):
     stock_m = models.IntegerField(default=0)
     stock_l = models.IntegerField(default=0)
     stock_xl = models.IntegerField(default=0)
-    available = models.BooleanField()
+    available = models.BooleanField(default=True)
     price = models.FloatField()
     shipping = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

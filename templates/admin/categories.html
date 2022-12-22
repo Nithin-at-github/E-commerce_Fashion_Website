@@ -1,0 +1,295 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card row px-xl-2 m-1">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h3>Sub-Categories
+                <a href="" data-bs-toggle="modal" data-bs-target="#SubcatModal" class="btn btn-primary btn-sm"
+                    style="float: right;">Add Sub-Category</a>
+            </h3><br>
+            <!-- Modal -->
+            <div class="modal fade" id="SubcatModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Sub-Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="{% url 'categories' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="basic-default-name"
+                                                    placeholder="Enter sub-category name" name="name" required />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label"
+                                                for="basic-default-message">Desc</label>
+                                            <div class="col-sm-10">
+                                                <textarea id="basic-default-message" class="form-control"
+                                                    placeholder="Enter Description" name="desc"
+                                                    aria-describedby="basic-icon-default-message2" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="formFile">Image</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="file" id="formFile" name="img"
+                                                    accept="image/png, image/jpeg, image/webp, image/svg" required />
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="add_subcat">Add</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-Categories Start -->
+            <div class="row px-xl-3 pb-3">
+                {% for subcat in sub_cats %}
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <a class="text-decoration-none" href="{{ subcat.get_url }}">
+                        <div class="cat-item d-flex align-items-center mb-4">
+                            <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                <img class="img-fluid" src="{{ subcat.img.url }}" alt="">
+                            </div>
+                            <div class="flex-fill pl-3">
+                                <h6>&nbsp;{{ subcat.name }}</h6>
+                                <a class="btn-sm text-danger"
+                                    href="http://{{ domain}}/admin/shop/subcategory/{{subcat.id}}/delete/"
+                                    title="Delete sub-category">
+                                    <i class="menu-icon tf-icons bx bx-trash"></i></a>
+
+                                <a class="btn-sm" href="" data-bs-toggle="modal"
+                                    data-bs-target="#editsubcatModal{{forloop.counter}}" title="Edit sub-category">
+                                    <i class="menu-icon tf-icons bx bx-edit"></i></a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="editsubcatModal{{forloop.counter}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Edit Sub-category</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <form action="{% url 'edit_subcat' subcat.id %}" method="post"
+                                            enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-name">Name</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="basic-default-name"
+                                                        placeholder="Enter sub-category name" name="name"
+                                                        value="{{ subcat.name }}" required />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-message">Desc</label>
+                                                <div class="col-sm-10">
+                                                    <textarea id="basic-default-message" rows="5" class="form-control"
+                                                        placeholder="Enter Description" name="desc"
+                                                        aria-describedby="basic-icon-default-message2"
+                                                        required>{{ subcat.desc }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="formFile">Image</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="file" id="formFile" name="img"
+                                                        accept="image/png, image/jpeg, image/webp, image/svg"
+                                                        required />
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Sub-Categories End -->
+        </div>
+    </div>
+    <div class="card row px-xl-2 mt-3">
+        <div class="card-body col-lg-12 table-responsive-md mb-5">
+            <h3>Categories
+                <a href="" data-bs-toggle="modal" data-bs-target="#catModal" class="btn btn-primary btn-sm"
+                    style="float: right;">Add Category</a>
+            </h3><br>
+
+            <!-- Modal -->
+            <div class="modal fade" id="catModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <form action="{% url 'categories' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="basic-default-name"
+                                                    placeholder="Enter category name" name="name" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="formFile">Image</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="file" id="formFile" name="img"
+                                                    accept="image/png, image/jpeg, image/webp, image/svg" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label"
+                                                for="basic-default-name">Sub-category</label>
+                                            <div class="col-sm-10">
+                                                {% for subcat in sub_cats %}
+                                                <div class="form-check form-check-inline mt-1">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="inlineCheckbox{{forloop.counter}}" name="{{subcat.name}}"
+                                                        value="{{subcat.id}}" />
+                                                    <label class="form-check-label"
+                                                        for="inlineCheckbox{{forloop.counter}}">{{subcat.name}}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="add_cat">Add</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Start -->
+            <div class="row px-xl-5 pb-3">
+                {% for category in categories %}
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <a class="text-decoration-none" href="{{ category.get_url }}">
+                        <div class="cat-item d-flex align-items-center mb-4">
+                            <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                <img class="img-fluid" src="{{ category.img.url }}" alt="">
+                            </div>
+                            <div class="flex-fill pl-3">
+                                <h6>&nbsp;{{ category.name }}</h6>
+                                <a class="btn-sm text-danger"
+                                    href="http://{{ domain }}/admin/shop/category/{{category.id}}/delete/"
+                                    title=" Delete category"><i class="menu-icon tf-icons bx bx-trash"></i></a>
+
+                                <a class="btn-sm" href="" data-bs-toggle="modal"
+                                    data-bs-target="#editcatModal{{forloop.counter}}" title="Edit category">
+                                    <i class="menu-icon tf-icons bx bx-edit"></i></a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="editcatModal{{forloop.counter}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Edit Category</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <form action="{% url 'edit_categ' category.id %}" method="post"
+                                            enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-name">Name</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="basic-default-name"
+                                                        placeholder="Enter category name" name="name"
+                                                        value="{{category.name}}" required />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="formFile">Image</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" type="file" id="formFile" name="img"
+                                                        accept="image/png, image/jpeg, image/webp, image/svg"
+                                                        required />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-name">Sub-category</label>
+                                                <div class="col-sm-10">
+                                                    {% for subcat in sub_cats %}
+                                                    <div class="form-check form-check-inline mt-1">
+                                                        <input {%if subcat in category.subcat.all%} checked {%endif%}
+                                                            class="form-check-input" type="checkbox"
+                                                            id="inlineCheckbox{{forloop.counter}}"
+                                                            name="{{subcat.name}}" value="{{subcat.id}}" />
+                                                        <label class="form-check-label"
+                                                            for="inlineCheckbox{{forloop.counter}}">{{subcat.name}}</label>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Categories End -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

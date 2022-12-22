@@ -279,7 +279,7 @@ def checkout(request):
                         cart= c_id,
                         product=pr_obj,
                         size=i.size,
-                        amount=tot_amount,
+                        amount=float(tot_amount),
                         firstname=firstname,
                         lastname=lastname,
                         email=email,

@@ -1,0 +1,65 @@
+{% extends 'admin/admin_base.html' %}
+{% load app_tags %}
+{% block content %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h3 class="m-2">User Reviews</h3><br>
+    <!-- Reviews Start -->
+    <div class="row px-xl-2">
+        {% for review in pg.object_list %}
+        <div class="col-md-4 col-sm card m-2 bg-light" style="width: 28rem;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col col-md-6 p-1">
+                        <img src="{{ review.product.img.url }}" alt="product" style="height: 10rem; width: 10rem;">
+                    </div>
+                    <div class="col col-md-6 p-1">
+                        <h6><a class="h5" href="{{ review.product.get_url }}">
+                                {{ review.product.name}}</a><small> - {{ review.created }}</small>
+                        </h6>
+                        {% if review.edited == True %}
+                        <h6><small><i>( edited {{ review.last_updated }} )</i></small></h6>
+                        {% endif %}
+                        <h5>{{ review.name }}</h5>
+                        <div class="text-primary mb-2">
+                            {% for i in review.rating|times %}
+                            <i class="fas fa-star text-warning"></i>
+                            {% endfor%}
+                            {% for j in review.rating|rating_rem %}
+                            <i class="far fa-star text-warning"></i>
+                            {% endfor %}
+                        </div>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="height: 15rem;">
+            <p class="h5 m-4">No reviews till now. </p>
+        </div>
+        {% endfor %}
+        <div class="col-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if pg.has_previous %}
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{pg.previous_page_number}}">Previous</span></a></li>
+                    {% endif %}
+                    {% for p in pg.paginator.page_range %}
+                    <li class="page-item {% if pg.number == p %} active {% endif %}"><a class="page-link"
+                            href="?page={{p}}">{{ p }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if pg.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{pg.next_page_number}}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Reviews End -->
+</div>
+
+{% endblock %}

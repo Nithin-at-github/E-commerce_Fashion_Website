@@ -18,4 +18,5 @@ urlpatterns = [
     path('del_review/<int:review_id>', views.del_review, name='del_review'),
     path('reviews_view', views.reviews_view, name='reviews_view'),
     path('profile', views.profile, name='profile'),
+    path('del_account', views.del_account, name='del_account'),
 ]
