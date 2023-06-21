@@ -2,7 +2,7 @@
 
 ## Dazzling is an e-commerce website with features like shopping cart, wishlist, user profile and many more.
 
-This website is hosted at the following link : http://dazzling.pythonanywhere.com/
+This website is hosted at the following link : https://dazzling.pythonanywhere.com/
 
 Dazzling is an online shopping website which sells a wide variety of men's, women's, and kids clothings. There are three types of users in this website, the administrator, registered users, and guest users. The administrator is the person who manages the whole website. The registered users are people who are registered to 
 this website. They will have special features like wishlist, shopping cart, ability to add reviews to products etc. The guest users are users who are accessing the 
